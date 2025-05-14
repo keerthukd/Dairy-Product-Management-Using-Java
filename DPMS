@@ -1,0 +1,352 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+class Biller
+{
+    static ArrayList <String> product= new <String> ArrayList();
+    static ArrayList <Integer> qty=new <Integer> ArrayList();
+    static ArrayList <Integer> price =new <Integer> ArrayList();
+    static ArrayList <Integer> tax=new <Integer> ArrayList();
+    static ArrayList <Integer> product_id=new <Integer> ArrayList();
+    int idd=101,pwd=111;
+    static int pid=1001;
+    Scanner sc=new Scanner(System.in);
+
+    void update()
+    {
+        int m,j;
+        boolean f=true;
+        System.out.println("enter a product id: ");
+        m=sc.nextInt();
+        for(j=0;j<this.product_id.size();j++)
+        {
+            if(m==this.product_id.get(j))
+            {
+                System.out.println("enter a new product name: ");
+                this.product.set(j,sc.next());
+                System.out.println("enter a new product qty: ");
+                this.qty.set(j,sc.nextInt());
+                System.out.println("enter a new product price: ");
+                this.price.set(j,sc.nextInt());
+                System.out.println("enter a new product tax: ");
+                this.tax.set(j,sc.nextInt());
+                f=false;
+                break;
+            }
+        }
+        if(f)
+        {
+            System.out.println("!!...invalid product id...!!");
+        }
+        else
+        {
+            System.out.println("!!...successfully updated...!!");
+        }
+    }
+    void add()
+    {
+        int m,j;
+        System.out.println("how many products to add ?:");
+        m=sc.nextInt();
+        for(j=0;j<m;j++)
+        {
+            System.out.println("enter product name: ");
+            product.add(sc.next());
+            System.out.println("enter product qty: ");
+            this.qty.add(sc.nextInt());
+            System.out.println("enter product price: ");
+            this.price.add(sc.nextInt());
+            System.out.println("enter product tax: ");
+            this.tax.add(sc.nextInt());
+            this.product_id.add(this.pid++);
+        }
+    }
+    public void view()
+    {
+        int j;
+        System.out.println("!!..available product..!!");
+        for(j=0;j<this.product.size();j++)
+        {
+            System.out.println("product: "+this.product.get(j)+" "+this.qty.get(j)+" "+this.price.get(j)+" "+this.tax.get(j)+" "+"product id: "+this.product_id.get(j));
+        }
+    }
+    void delete()
+    {
+        int p,j;
+        boolean f=true;
+        System.out.println("enter product id: ");
+        p=sc.nextInt();
+        for(j=0;j<this.product_id.size();j++)
+        {
+            if(this.product_id.get(j)==p)
+            {
+                this.product.remove(j);
+                this.qty.remove(j);
+                this.price.remove(j);
+                this.tax.remove(j);
+                this.product_id.remove(j);
+                f=false;
+                break;
+            }
+        }
+        if(f)
+        {
+            System.out.println("!!...invalid product id...!!");
+        }
+        else
+        {
+            System.out.println("!!...product removed...!!");
+        }
+    }
+    void login()
+    {
+        int id,pass,n;
+        System.out.println("enter your id: ");
+        id=sc.nextInt();
+        System.out.println("enter your password: ");
+        pass=sc.nextInt();
+        if(id==this.idd&&pass==this.pwd)
+        {
+            System.out.println("\t!!!...Login Successfull...!!!");
+            do
+            {
+                System.out.println("1.Add product");
+                System.out.println("2.Update product");
+                System.out.println("3.Delete product");
+                System.out.println("4.View product");
+                System.out.println("5.Logout");
+                n=sc.nextInt();
+                switch(n)
+                {
+                    case 1:add();break;
+                    case 2:update();break;
+                    case 3:delete();break;
+                    case 4:view();break;
+                    case 5:System.out.println("\t!! Logout Successfull !!");break;
+                    default:System.out.println("---Invalid Input---");
+                }
+            }while(n!=5);
+        }
+        else
+        {
+            System.out.println("!!!login fail!!");
+        }
+    }
+    void biller()
+    {
+        int n;
+        System.out.println("---Biller---");
+        do
+        {
+            System.out.println("1.login");
+            System.out.println("2.Logout");
+            n=sc.nextInt();
+            switch(n)
+            {
+                case 1:login();break;
+                case 2:System.out.println("\t!! Exit Successfull !!");break;
+                default:System.out.println("---Invalid Input---");
+            }
+        }while(n!=2);
+    }
+}
+class Consumer extends Biller
+{
+    int n,uid=101,bill=1234,i;
+    Scanner sc=new Scanner(System.in);
+    ArrayList <String>name=new <String> ArrayList();
+    ArrayList <Integer> pass=new <Integer> ArrayList();
+    ArrayList <String> id=new <String> ArrayList();
+    ArrayList <Integer> total=new <Integer> ArrayList();
+    ArrayList <Integer> billno=new <Integer> ArrayList();
+    void signup()
+    {
+        String name,mobile,t="";
+        int pass1,pass2;
+        System.out.println("enter your name: ");
+        name=sc.next();
+        this.name.add(name);
+        System.out.println("enter your mobile number: ");
+        mobile=sc.next();
+        System.out.println("create password: ");
+        pass1=sc.nextInt();
+        System.out.println("confirm password: ");
+        pass2=sc.nextInt();
+        if(pass1==pass2)
+        {
+            this.pass.add(pass1);
+            t+=name.substring(0,2);
+            t+=mobile.substring(mobile.length()-2,mobile.length());
+            t+=this.uid++;
+            this.id.add(t);
+            System.out.println(name);
+            System.out.println(pass);
+            System.out.println(id);
+            this.total.add(0);
+            this.billno.add(0);
+        }
+        else
+        {
+            System.out.println("password mismatch");
+        }
+    }
+    void check()
+    {
+        view();
+    }
+   
+    void login()
+    {
+        String n;
+        int m;
+        boolean f=true;
+        System.out.println("enter your id: ");
+        n=sc.next();
+        System.out.println("enter your password: ");
+        m=sc.nextInt();
+        for(i=0;i<this.id.size();i++)
+        {
+            if(n.equals(this.id.get(i))&& m==this.pass.get(i))
+            {
+                f=false;
+                 System.out.println("!!....login Successfull....!!");
+                do{
+                    System.out.println("1.check");
+                    System.out.println("2.buy");
+                    System.out.println("3.return");
+                    System.out.println("4.Logout");
+                    m=sc.nextInt();
+                    switch(m)
+                    {
+                        case 1:check();break;
+                        case 2:buy();break;
+                        case 3:ret();break;
+                        case 4:System.out.println("!!...logout Successfull");break;
+                        default:System.out.println("!!...Invalid Input...!!");
+                    }
+                }while(m!=4);
+            }
+        }
+        if(f)
+        {
+            System.out.println("login fail");
+        }
+    }
+    void buy()
+    {
+        String product_name;
+        int qty,j;
+        boolean f=true;
+        System.out.println("enter product name: ");
+        product_name=sc.next();
+        for(j=0;j<super.product.size();j++)
+        {
+            if(product_name.equals(super.product.get(j)))
+            {
+                f=false;
+                System.out.println("enter qty: ");
+                qty=sc.nextInt();
+                int too=this.total.get(this.i);
+                int tot=super.price.get(j)*qty;
+                System.out.println("tot"+tot);
+                int tax=(super.tax.get(j)*tot)/100;
+                too+=tot+tax;
+                System.out.println("tax"+tax);
+                this.total.set(this.i,too);
+                this.billno.set(this.i,this.bill);
+                System.out.println("-----your billno "+this.bill++ +"------");
+                System.out.println("product name: "+super.product.get(j));
+                System.out.println("product price: "+super.price.get(j));
+                System.out.println("product tax: "+super.tax.get(j));
+                System.out.println("total cost: "+this.total.get(this.i));
+                System.out.println("-------  thank you   -------");
+                int t=super.qty.get(j);
+                t-=qty;
+                super.qty.set(j,t);
+            }
+        }
+        if(f)
+        {
+            System.out.println("!!.....product out of stock.....!!");
+        }
+       System.out.println(this.total);
+       System.out.println(this.billno);
+    }
+    void ret()
+    {
+        int b,j,qtyy;
+        String m;
+        boolean f=true;
+        System.out.println("enter a bill number: ");
+        b=sc.nextInt();
+        for(j=0;j<this.billno.size();j++)
+        {
+            if(b==this.billno.get(j))
+            {
+                f=false;
+                System.out.println("enter product name: ");
+                m=sc.next();
+                for(j=0;j<super.product.size();j++)
+                {
+                    if(m.equals(super.product.get(j)))
+                    {
+                        System.out.println("enter a qty: ");
+                        qtyy=sc.nextInt();
+                        int taxx=((super.price.get(j)*qtyy)*super.tax.get(j))/100;
+                        int p=(super.price.get(j)*qtyy)+taxx;
+                        qtyy+=super.qty.get(j);
+                        super.qty.set(j,qtyy);
+                        int k=this.total.get(this.i);
+                        k-=p;
+                        this.total.set(this.i,k);
+                        System.out.println("Returned successfully");
+                        System.out.println(this.total.get(this.i));
+
+                    }
+                }
+            }
+        }
+        if(f)
+        {
+            System.out.println("---invalid bill number---");
+        }
+    }
+    void consumer()
+    {
+        do{
+            System.out.println("1.signup");
+            System.out.println("2.login");
+            System.out.println("3.exit");
+            n=sc.nextInt();
+            switch (n)
+            {
+                case 1:signup();break;
+                case 2:login();break;
+                case 3:System.out.println("!!..exited..!!");
+            }
+        }while (n!=3);
+    }
+}
+public class Main
+{
+    public static void main (String[] args) 
+    {
+        Scanner sc=new Scanner(System.in);
+        Biller b=new Biller();
+        Consumer c=new Consumer();
+        int n;
+        System.out.println("---main menu---");
+        do
+        {
+            System.out.println("1.biller");
+            System.out.println("2.consumer");
+            System.out.println("3.Exit");
+            n=sc.nextInt();
+            switch(n)
+            {
+                case 1:b.biller();break;
+                case 2:c.consumer();break;
+                case 3:System.out.println("---Exited---");
+            }
+        }while(n!=3);
+    }
+}
